@@ -1,4 +1,4 @@
-name: deeplearning-gpu
+name: dl_env
 channels:
   # Prioritize Tsinghua Mirrors for speed in China
   - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
@@ -13,18 +13,16 @@ dependencies:
   - ipywidgets
   - pandas
   - scikit-learn
-  # PyTorch with CUDA support (adjust 12.1 to 11.8 if your server driver is old)
-  - pytorch
-  - torchvision
-  - torchaudio
-  - pytorch-cuda=12.1
   
   # --- PIP PACKAGES ---
   - pip
   - pip:
     # Force pip to use Tsinghua mirror for these packages
     - --index-url https://pypi.tuna.tsinghua.edu.cn/simple
+    - torch
     - kagglehub
     - python-Levenshtein
     - transformers
     - accelerate
+    - protobuf 
+    - sentencepiece

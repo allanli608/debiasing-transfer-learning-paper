@@ -1,5 +1,9 @@
 # src/model.py
 import torch
+
+import os
+os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
+
 from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
 
 
