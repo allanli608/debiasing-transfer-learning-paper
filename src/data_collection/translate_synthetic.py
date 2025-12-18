@@ -12,41 +12,40 @@ import argparse
 MODEL_NAME = "Helsinki-NLP/opus-mt-en-zh"
 BATCH_SIZE = 128
 
+
 def load_translator(device):
     """Loads the lightweight English-to-Chinese translation model."""
     print(f"Loading translation model: {MODEL_NAME}...")
     tokenizer = MarianTokenizer.from_pretrained(MODEL_NAME)
-    
+
     # CHANGE 2: Use Half Precision (fp16) for massive speedup
     model = MarianMTModel.from_pretrained(MODEL_NAME).to(device).half()
-    
+
     model.eval()
     return tokenizer, model
 
+
 def translate_batch(text_list, tokenizer, model, device):
     """Translates a list of strings from English to Chinese."""
-    
+
     # tokenize
     inputs = tokenizer(
-        text_list, 
-        return_tensors="pt", 
-        padding=True, 
-        truncation=True, 
-        max_length=512
+        text_list, return_tensors="pt", padding=True, truncation=True, max_length=512
     ).to(device)
-    
+
     # generate
     with torch.no_grad():
         translated = model.generate(
-            **inputs, 
+            **inputs,
             # CHANGE 3: Greedy Decoding (Fastest)
-            num_beams=1,        
+            num_beams=1,
             do_sample=False,
-            max_new_tokens=512  # Prevents runaway generation
+            max_new_tokens=512,  # Prevents runaway generation
         )
-    
+
     # decode
     return [tokenizer.decode(t, skip_special_tokens=True) for t in translated]
+
 
 def process_file(input_path, output_path, tokenizer, model, device):
     print(f"\nProcessing {input_path}...")
