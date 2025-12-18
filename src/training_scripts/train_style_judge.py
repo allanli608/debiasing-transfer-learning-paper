@@ -1,3 +1,6 @@
+import os
+os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
+
 import pandas as pd
 import torch
 from sklearn.model_selection import train_test_split
@@ -82,10 +85,10 @@ if __name__ == "__main__":
 
     # 3. Train
     training_args = TrainingArguments(
-        output_dir="./results_judge",
+        output_dir="./results/results_judge",
         num_train_epochs=2,  # Short training is fine for a classifier
         per_device_train_batch_size=32,  # BERT-base is small, 32 fits easily
-        evaluation_strategy="epoch",
+        eval_strategy="epoch",
         save_strategy="epoch",
         logging_steps=100,
         learning_rate=2e-5,

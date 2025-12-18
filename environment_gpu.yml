@@ -29,3 +29,5 @@ dependencies:
     - sentencepiece
     - sacremoses
     - notebook
+    - bert_score
+    - evaluate
