@@ -32,3 +32,4 @@ dependencies:
     - bert_score
     - evaluate
     - tqdm
+    - seaborn

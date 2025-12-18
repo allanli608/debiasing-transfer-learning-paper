@@ -23,7 +23,7 @@ class MBartNeutralizer:
         )
 
         # Load Model
-        self.model = MBartForConditionalGeneration.from_pretrained(model_name)
+        self.model = MBartForConditionalGeneration.from_pretrained(model_name, attn_implementation="eager")
         self.model.to(self.device)
 
     def save_model(self, path):
