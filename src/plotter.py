@@ -3,7 +3,6 @@ import matplotlib.font_manager as fm
 import seaborn as sns
 import torch
 import os
-import urllib.request
 
 font_path = "src/misc/SimHei.ttf" 
 
@@ -16,85 +15,6 @@ else:
 
 # Load the font property
 my_font = fm.FontProperties(fname=font_path)
-
-def plot_attention(model_wrapper, text_input, layer=-1, head=0):
-    """
-    Plots the Cross-Attention weights.
-    Fixes SDPA errors and EarlyStopping errors.
-    """
-    # 1. Get Model & Tokenizer safely
-    if hasattr(model_wrapper, "model"):
-        model = model_wrapper.model
-        tokenizer = model_wrapper.tokenizer
-    else:
-        model = model_wrapper.get_model()
-        tokenizer = model_wrapper.get_tokenizer()
-        
-    device = model_wrapper.device
-
-    # --- FIX 1: Force 'Eager' Mode (Fixes SDPA Error) ---
-    # We attempt to force the config to use standard attention 
-    # so we can extract weights.
-    if hasattr(model.config, "attn_implementation"):
-        model.config.attn_implementation = "eager"
-        
-    model.config.output_attentions = True
-    model.config.return_dict_in_generate = True
-    
-    # 2. Tokenize
-    inputs = tokenizer(text_input, return_tensors="pt").to(device)
-    
-    # 3. Generate
-    with torch.no_grad():
-        outputs = model.generate(
-            **inputs, 
-            output_attentions=True,
-            return_dict_in_generate=True,
-            forced_bos_token_id=tokenizer.lang_code_to_id["zh_CN"],
-            max_length=20,
-            
-            # --- FIX 2: Explicit Generation Settings ---
-            early_stopping=False, # Fixes the ValueError
-            num_beams=1           # Forces Greedy Search (Simpler for visualization)
-        )
-
-    # 4. Extract & Plot
-    if outputs.cross_attentions is None:
-        print("❌ Error: Model did not return attention. You may need to reload the model with attn_implementation='eager'.")
-        return
-
-    tgt_tokens = [tokenizer.decode(t) for t in outputs.sequences[0]]
-    src_tokens = [tokenizer.decode(t) for t in inputs.input_ids[0]]
-    
-    attentions = []
-    for step in outputs.cross_attentions:
-        if step is None: continue
-        try:
-            # Layer shape: [Batch, Head, Tgt_Len, Src_Len]
-            attn = step[layer][0, head, :, :].cpu()
-            attentions.append(attn)
-        except Exception as e:
-            continue
-    
-    if not attentions:
-        print("❌ No valid attention weights found.")
-        return
-
-    # Stack
-    attention_matrix = torch.cat(attentions, dim=0).numpy()
-    
-    # Plot
-    plt.figure(figsize=(10, 8))
-    sns.heatmap(
-        attention_matrix, 
-        xticklabels=src_tokens, 
-        yticklabels=tgt_tokens[1:], 
-        cmap="viridis"
-    )
-    plt.xlabel("Source (Input)")
-    plt.ylabel("Generated (Output)")
-    plt.title(f"Attention Map: {model_wrapper.__class__.__name__}")
-    plt.show()
 
 def plot_attention_averaged(model_wrapper, text_input):
     """
