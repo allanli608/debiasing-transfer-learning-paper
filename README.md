@@ -3,6 +3,9 @@
 3. `conda activate deeplearning-local`
 4. `python ./src/data_collection/wnc_download.py`
 5. run `wnc_download.py` and then `preprocess.py`
+6. run `translate_synthetic.py`
+7. run `create_pseudo_gold.py`
+8. run 
 
 
 what we have so far:
