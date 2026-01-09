@@ -3,7 +3,7 @@
 **Authors:** 李盼嘉乐 (Allan Li) et al.
 **Institution:** Tsinghua University
 
-**Final Report: ** [insert]
+**Final Report:** [Lost in Translation: Why Zero-Shot Transfer Fails at Detecting Subjectivity in Chinese](report.pdf)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/release/python-380/) [![Framework: PyTorch](https://img.shields.io/badge/Framework-PyTorch-orange.svg)](https://pytorch.org/)
 
