@@ -7,7 +7,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/release/python-380/) [![Framework: PyTorch](https://img.shields.io/badge/Framework-PyTorch-orange.svg)](https://pytorch.org/)
 
-## 📖 Abstract
+## Abstract
 Neutral Style Transfer—the automated removal of subjective bias (e.g., changing *"The radical regime"* to *"The government"*)—is a well-solved task in English but remains difficult for low-resource languages like Chinese due to a lack of parallel corpora.
 
 This repository contains the code and datasets for our report. We investigate whether large multilingual models (mBART-50) can "transfer" the semantic concept of subjectivity from English to Chinese without target-language supervision.
@@ -19,7 +19,7 @@ This repository contains the code and datasets for our report. We investigate wh
 
 ---
 
-## 🚀 Installation
+## Installation
 
 ```bash
 # Clone the repository
